@@ -75,92 +75,6 @@ class Intern extends Employee{
 employeeArray = []
 
 
-
-
-
-
-
-// inquirer
-//     .prompt([
-//         {
-//             type: 'input',
-//             name: 'teamManagersName',
-//             default: 'Prabh Hoz',
-//             message: 'Enter the name of the team manager!',
-
-//         },
-
-//         {
-//             type: 'input',
-//             name: 'employeeID',
-//             message: 'Enter their employee ID',
-//         },
-
-//         {
-//             type: 'input',
-//             name: 'email',
-
-//             message: 'Enter their email',
-//         },
-
-
-//         {
-//             type: 'input',
-//             name: 'officeNumber',
-
-//             message: 'Enter their office number ',
-
-//         },
-
-//         {
-//             type: 'input',
-//             name: 'usage',
-//             message: 'Write down the usage',
-
-//         },
-
-//         {
-//             type: 'list',
-//             name: 'license',
-//             message: 'Select the license',
-//             choices: ['MIT', 'public', 'GNU', 'GPL'],
-//         },
-
-//         {
-//             type: 'input',
-//             name: 'tests',
-//             message: 'Write down the tests done',
-
-//         },
-
-//         {
-//             type: 'input',
-//             name: 'gmail',
-//             default: 'jacksonmorristhring2000@gmail.com',
-//             message: 'Enter your email',
-
-//         },
-
-//         {
-//             type: 'input',
-//             name: 'github',
-//             default: 'https://github.com/jacksonMorrisThring',
-//             message: 'Enter your link to your github account',
-
-//         },
-
-
-
-//     ])
-
-//     .then((answers) => {
-//         const READMEpageContent = generateREADME(answers);
-
-//         fs.writeFile('README.md', READMEpageContent, (err) =>
-//         err ? console.log(err) : console.log('Successfully created html')
-//         );
-//     });
-
 const nodeMan = () => {
     
     const askQuestion = () => {
@@ -210,13 +124,6 @@ const nodeMan = () => {
     
         .then((answers) => {
             handleAnswers(answers);
-        
-     
-        // if (nextSelection !== "Ive finnished building my team!") {
-        //     // Ask the next question
-        //     console.log(`Success!`)
-        //     askQuestion (); // Recursion !
-        // }
         });                                                                                                             
     };
     askQuestion() 
@@ -242,7 +149,7 @@ const handleAnswers = ({position, name, employeeID, email, officeNumber, nextSel
     else{
         console.log("all done!")
         //generate html
-        const HTMLpageContent = generateHTML({position, name, employeeID, email, officeNumber, nextSelection});
+        const HTMLpageContent = generateHTML(...employeeArray);
 
         fs.writeFile('index.html', HTMLpageContent, (err) => {
             err ? console.log(err) : console.log('Successfully created html')
@@ -250,9 +157,8 @@ const handleAnswers = ({position, name, employeeID, email, officeNumber, nextSel
     }
 }
 
-const generateHTML = ({position, name, employeeID, email, officeNumber, nextSelection}) => 
-   
-    `<!DOCTYPE html>
+const generateHTML = (...employeeArray) => {
+   `<!DOCTYPE html>
     <html lang="en">
     
     <head>
@@ -279,47 +185,147 @@ const generateHTML = ({position, name, employeeID, email, officeNumber, nextSele
                 <div class="team-area col-12 d-flex justify-content-center">
                     <div class="card employee-card">
         <div class="card-header">
-            <h2 class="card-title">${employeeArray[0].name}</h2>
+            <h2 class="card-title">${JSON.stringify(employeeArray[0].name)}</h2>
             <h3 class="card-title"><i class="fas fa-mug-hot mr-2"></i>Manager</h3>
         </div>
         <div class="card-body">
             <ul class="list-group">
-                <li class="list-group-item">ID: 1</li>
-                <li class="list-group-item">Email: <a href="mailto:bob@team.com">bob@team.com</a></li>
-                <li class="list-group-item">Office number: Manager</li>
+                <li class="list-group-item">ID: ${JSON.stringify(employeeArray[0].id)}</li>
+                <li class="list-group-item">Email: <a href="mailto:${JSON.stringify(employeeArray[0].email)}">${JSON.stringify(employeeArray[0].email)}</a></li>
+                <li class="list-group-item">Office number: ${JSON.stringify(employeeArray[0].officeNumber)}</li>
             </ul>
         </div>
     </div>
-    <div class="card employee-card">
-        <div class="card-header">
-            <h2 class="card-title">Jane</h2>
-            <h3 class="card-title"><i class="fas fa-glasses mr-2"></i>Engineer</h3>
-        </div>
-        <div class="card-body">
-            <ul class="list-group">
-                <li class="list-group-item">ID: 2</li>
-                <li class="list-group-item">Email: <a href="mailto:jane@team.com">jane@team.com</a></li>
-                <li class="list-group-item">GitHub: <a href="https://github.com/Engineer" target="_blank" rel="noopener noreferrer">Engineer</a></li>
-            </ul>
-        </div>
-    </div>
-    <div class="card employee-card">
-        <div class="card-header">
-            <h2 class="card-title">Joe</h2>
-            <h3 class="card-title"><i class="fas fa-user-graduate mr-2"></i>Intern</h3>
-        </div>
-        <div class="card-body">
-            <ul class="list-group">
-                <li class="list-group-item">ID: 3</li>
-                <li class="list-group-item">Email: <a href="mailto:joe@team.com">joe@team.com</a></li>
-                <li class="list-group-item">School: Intern</li>
-            </ul>
-        </div>
-    </div>
-    
-                </div>
-            </div>
-        </div>
-    </body>
+`
+for (let i = 0; i < employeeArray.length; i++) {
+
+    var employee = employeeArray[i];
+    console.log(`\N\NTESTING IF WE CAN SEE THE NAME OF EMPLOYEES]\N\N`);
+    console.log(employeeArray[i]);
+    console.log(employeeArray[i].name);
+
+    console.log(employee);
+    console.log(employee.name);
+    if (employee.position === "Manager") {
+        console.log(`manager already done`);
+
+    }
+    else if(employee.position === "Engineer"){
+        function generateEngineerCard (employee) {
+            return `<div class="card employee-card">
+            //     <div class="card-header">
+            //         <h2 class="card-title">${JSON.stringify(employee.name)}</h2>
+            //         <h3 class="card-title"><i class="fas fa-glasses mr-2"></i>Engineer</h3>
+            //     </div>
+            //     <div class="card-body">
+            //         <ul class="list-group">
+            //             <li class="list-group-item">ID: ${JSON.stringify(employee.id)}</li>
+            //             <li class="list-group-item">Email: <a href="mailto:${JSON.stringify(employee.email)}">${JSON.stringify(employee.email)}</a></li>
+            //             <li class="list-group-item">Office number: ${JSON.stringify(employee.officeNumber)}</li>
+            //         </ul>
+            //     </div>
+            // </div>`
+        }
+        generateEngineerCard();
+    }
+    else if(employee.position === "Intern"){
+        function generateInternCard (employee) {
+            return `<div class="card employee-card">
+            //     <div class="card-header">
+            //         <h2 class="card-title">${JSON.stringify(employee.name)}</h2>
+            //         <h3 class="card-title"><i class="fas fa-glasses mr-2"></i>Intern</h3>
+            //     </div>
+            //     <div class="card-body">
+            //         <ul class="list-group">
+            //             <li class="list-group-item">ID: ${JSON.stringify(employee.id)}</li>
+            //             <li class="list-group-item">Email: <a href="mailto:${JSON.stringify(employee.email)}">${JSON.stringify(employee.email)}</a></li>
+            //             <li class="list-group-item">Office number: ${JSON.stringify(employee.officeNumber)}</li>
+            //         </ul>
+            //     </div>
+            // </div>`
+        }
+        generateInternCard();
+    }
+    else{
+        console.log("error")
+    }
+
+    `
+        </body>
     
     </html>`
+    }
+}
+    
+    // <!DOCTYPE html>
+    // <html lang="en">
+    
+    // <head>
+    //     <meta charset="UTF-8" />
+    //     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    //     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    //     <title>My Team</title>
+    //     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    //         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    //     <link rel="stylesheet" href="style.css">
+    //     <script src="https://kit.fontawesome.com/c502137733.js"></script>
+    // </head>
+    
+    // <body>
+    //     <div class="container-fluid">
+    //         <div class="row">
+    //             <div class="col-12 jumbotron mb-3 team-heading">
+    //                 <h1 class="text-center">My Team</h1>
+    //             </div>
+    //         </div>
+    //     </div>
+    //     <div class="container">
+    //         <div class="row">
+    //             <div class="team-area col-12 d-flex justify-content-center">
+    //                 <div class="card employee-card">
+    //     <div class="card-header">
+    //         <h2 class="card-title">${employeeArray[0].name}</h2>
+    //         <h3 class="card-title"><i class="fas fa-mug-hot mr-2"></i>Manager</h3>
+    //     </div>
+    //     <div class="card-body">
+    //         <ul class="list-group">
+    //             <li class="list-group-item">ID: 1</li>
+    //             <li class="list-group-item">Email: <a href="mailto:bob@team.com">bob@team.com</a></li>
+    //             <li class="list-group-item">Office number: Manager</li>
+    //         </ul>
+    //     </div>
+    // </div>
+    // <div class="card employee-card">
+    //     <div class="card-header">
+    //         <h2 class="card-title">Jane</h2>
+    //         <h3 class="card-title"><i class="fas fa-glasses mr-2"></i>Engineer</h3>
+    //     </div>
+    //     <div class="card-body">
+    //         <ul class="list-group">
+    //             <li class="list-group-item">ID: 2</li>
+    //             <li class="list-group-item">Email: <a href="mailto:jane@team.com">jane@team.com</a></li>
+    //             <li class="list-group-item">GitHub: <a href="https://github.com/Engineer" target="_blank" rel="noopener noreferrer">Engineer</a></li>
+    //         </ul>
+    //     </div>
+    // </div>
+    // <div class="card employee-card">
+    //     <div class="card-header">
+    //         <h2 class="card-title">Joe</h2>
+    //         <h3 class="card-title"><i class="fas fa-user-graduate mr-2"></i>Intern</h3>
+    //     </div>
+    //     <div class="card-body">
+    //         <ul class="list-group">
+    //             <li class="list-group-item">ID: 3</li>
+    //             <li class="list-group-item">Email: <a href="mailto:joe@team.com">joe@team.com</a></li>
+    //             <li class="list-group-item">School: Intern</li>
+    //         </ul>
+    //     </div>
+    // </div>
+    
+    //             </div>
+    //         </div>
+    //     </div>
+    // </body>
+    
+    // </html>`
+
