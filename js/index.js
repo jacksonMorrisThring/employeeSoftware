@@ -1,17 +1,11 @@
-//.should work once package.json, node modules and packae-lock files are created
-
-//IDEAS FOR SOLUTIONS: DYNAMICALLY GENRATE IT ALL USING FS
-//->do some googling on dynamic generation using jquery and fs
-//->keep looking at github example
-
-
 const inquirer = require('inquirer');
 const fs = require('fs');
-const { Console } = require('console');
+// const { Console } = require('console');
 
 //Used to keep traqck of employees being added
 index = 0;
 
+//Classes for employee, as well as manager, engineer and intern
 class Employee{
     constructor(name, id, email){
         this.name = name;
@@ -85,12 +79,12 @@ class Intern extends Employee{
     }
 }
 
-
+//Employee array that will be filled
 employeeArray = []
 
 
 const nodeMan = () => {
-    
+    //Prompts to specify which object should be created
     const askQuestion = () => {
         inquirer.prompt([
         {
@@ -172,6 +166,7 @@ const handleAnswers = ({position, name, employeeID, email, officeNumber, nextSel
     console.log("employee array is now");
     console.log(employeeArray);
 
+    //RUNS FUNCTION AGAIN IF ADD TEAM MEMEBER IS SPECIFIED AT END
     if (nextSelection === "Add another team member") {
         nodeMan();
     }
@@ -192,10 +187,9 @@ const handleAnswers = ({position, name, employeeID, email, officeNumber, nextSel
     }
 }
 
-
-const generateHTML = (employeeArray) => 
-   
-`<!DOCTYPE html>
+//Generate file
+const generateHTML = (employeeArray) => {
+    let HTMLstring = `<!DOCTYPE html>
     <html lang="en">
     
     <head>
@@ -233,17 +227,14 @@ const generateHTML = (employeeArray) =>
             </ul>
         </div>
     </div>
-`
-
-   
+`;
 for (let i = 0; i < employeeArray.length; i++) {
 
     var employee = employeeArray[i];
     
 if(employee.getPosition() === "Engineer"){
-        function generateEngineerCard (employee) {
-            const Engineer = () =>
-             `<div class="card employee-card">
+        const generateEngineerCard = (employee) => {
+             let HTMLstringNext = `<div class="card employee-card">
                 <div class="card-header">
                     <h2 class="card-title">${employee.getName()}</h2>
                     <h3 class="card-title"><i class="fas fa-glasses mr-2"></i>Engineer</h3>
@@ -255,18 +246,18 @@ if(employee.getPosition() === "Engineer"){
                         <li class="list-group-item">Office number: ${JSON.stringify(employee.officeNumber)}</li>
                     </ul>
                 </div>
-            </div>`
-            fs.appendFile("index.html", Engineer, (err) => {
-                err ? console.log(err) : console.log('Successfully created html')
-            });
+            </div>`;
+
+            //Very important, stitches together strings 
+            HTMLstring = HTMLstring.concat(HTMLstringNext);
         }
 
         generateEngineerCard(employee);
     }
     else if(employee.getPosition() === "Intern"){
         
-        function generateInternCard (employee) {
-            return `<div class="card employee-card">
+        const generateInternCard = (employee) => {
+            HTMLstringNext = `<div class="card employee-card">
                 <div class="card-header">
                     <h2 class="card-title">${employee.getName()}</h2>
                     <h3 class="card-title"><i class="fas fa-glasses mr-2"></i>Intern</h3>
@@ -278,7 +269,10 @@ if(employee.getPosition() === "Engineer"){
                         <li class="list-group-item">Office number: ${JSON.stringify(employee.officeNumber)}</li>
                     </ul>
                 </div>
-            </div>`
+            </div>`;
+
+            HTMLstring = HTMLstring.concat(HTMLstringNext);
+
         }
         generateInternCard(employee);
     }
@@ -286,8 +280,18 @@ if(employee.getPosition() === "Engineer"){
         console.log("error")
     }
 
-    `
+
+}
+
+//Finishes off html, and returns string as whole
+let HTMLfinal =  `
         </body>
     
-    </html>`
+    </html>`;
+
+    HTMLstring = HTMLstring.concat(HTMLfinal);
+
+    console.log(HTMLstring);
+
+    return HTMLstring;
     }
