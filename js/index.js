@@ -7,21 +7,16 @@
 
 const inquirer = require('inquirer');
 const fs = require('fs');
+const { Console } = require('console');
 
 //Used to keep traqck of employees being added
 index = 0;
 
 class Employee{
-    constructor(position, name, id, email, officeNumber){
-        this.position  = position
+    constructor(name, id, email){
         this.name = name;
         this.id = id;
-        this.officeNumber = officeNumber;
         this.email = email;
-    }
-    getPosition(){
-        console.log(this.position);
-        return this.position;
     }
     getName(){
         console.log(this.name);
@@ -33,11 +28,6 @@ class Employee{
         return this.id;
     }
 
-    getOffice(){
-        console.log(this.officeNumber);
-        return this.officeNumber;
-    }
-
     getEmail(){
         console.log(this.email);
         return this.email;
@@ -46,28 +36,52 @@ class Employee{
 
 class Manager extends Employee{
    
-    constructor(position, name, id, email, officeNumber){
+    constructor(name, id, email, officeNumber){
 
-        super(name, id, officeNumber, email)
-        this.position = "Manager";
+        super(name, id, email)
+        this.officeNumber = officeNumber;
     }
+    getPosition(){
+        return "Manager";
+    }
+
+    getOfficeNum(){
+        return this.officeNumber;
+    }
+
 }
 
 class Engineer extends Employee{
    
-    constructor(position, name, id, email, officeNumber){
+    constructor(name, id, email, officeNumber){
 
-        super(name, id, officeNumber, email)
-        this.position = "Engineer";
+        super(name, id, email)
+        this.officeNumber = officeNumber;
+    }
+
+    getPosition(){
+        return "Engineer";
+    }
+
+    getOfficeNum(){
+        return this.officeNumber;
     }
 }
 
 class Intern extends Employee{
    
-    constructor(position, name, id, email, officeNumber){
+    constructor(name, id, email, officeNumber){
 
-        super(name, id, officeNumber, email)
-        this.position = "intern";
+        super(name, id, email)
+        this.officeNumber = officeNumber;
+    }
+
+    getPosition(){
+        return "Intern";
+    }
+
+    getOfficeNum(){
+        return this.officeNumber;
     }
 }
 
@@ -84,7 +98,7 @@ const nodeMan = () => {
             name: 'position',
 
             message: 'Select the position of the team member!',
-            choices: ["Team Manager", "Engineer", "Intern"],
+            choices: ["Manager", "Engineer", "Intern"],
         },
         {
             type: 'input',
@@ -132,8 +146,23 @@ nodeMan();
 
 
 const handleAnswers = ({position, name, employeeID, email, officeNumber, nextSelection}) => {
-    console.log("Creating emplyee... email:" + email + " and officeNumber: "+officeNumber);
-    var tempEmployee = new Employee(position, name, employeeID, email, officeNumber);
+    console.log("Creating employee... email:" + email + " and officeNumber: "+officeNumber);
+    if (position === "Manager") {
+        console.log("Creating a manager");
+        var tempEmployee = new Manager(position, name, employeeID, email, officeNumber);
+    }
+    else if(position === "Engineer"){
+        console.log("Creating a Engineer");
+        var tempEmployee = new Engineer(position, name, employeeID, email, officeNumber);
+    }
+    else if(position === "Intern"){
+        console.log("Creating a Intern");
+        var tempEmployee = new Intern(position, name, employeeID, email, officeNumber);
+    }
+    else{
+        console.log("error")
+    }
+    //var tempEmployee = new Employee(position, name, employeeID, email, officeNumber);
     
     console.log(`New employee created with name ${tempEmployee.name}`);
     employeeArray[index] = tempEmployee;
@@ -149,12 +178,33 @@ const handleAnswers = ({position, name, employeeID, email, officeNumber, nextSel
     else{
         console.log("all done!")
         //generate html
-        const HTMLpageContent = generateHTML(...employeeArray);
+        // const HTMLpageContent = generateHTML1();
+        // //const HTMLpageContent = generateHTML(...employeeArray);
 
-        fs.writeFile('index.html', HTMLpageContent, (err) => {
-            err ? console.log(err) : console.log('Successfully created html')
-        });
+        // fs.writeFile('index.html', HTMLpageContent, (err) => {
+        //     err ? console.log(err) : console.log('Successfully created html')
+        // });
     }
+}
+const generateHTML1 = () =>{
+    `<!DOCTYPE html>
+    <html lang="en">
+    
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <title>My Team</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+            integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="stylesheet" href="style.css">
+        <script src="https://kit.fontawesome.com/c502137733.js"></script>
+    </head>
+    
+    <body>
+    </body?
+</html>
+    `
 }
 
 const generateHTML = (...employeeArray) => {
@@ -196,7 +246,11 @@ const generateHTML = (...employeeArray) => {
             </ul>
         </div>
     </div>
+
+    </body>
+    </html>
 `
+
 
 for (let i = 0; i < employeeArray.length; i++) {
 
@@ -259,9 +313,9 @@ for (let i = 0; i < employeeArray.length; i++) {
     // <head>
     //     <meta charset="UTF-8" />
     //     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    //     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    //     <title>My Team</title>
-    //     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    // //     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    // //     <title>My Team</title>
+    // //     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     //         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     //     <link rel="stylesheet" href="style.css">
     //     <script src="https://kit.fontawesome.com/c502137733.js"></script>
