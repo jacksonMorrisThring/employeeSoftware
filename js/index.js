@@ -197,15 +197,11 @@ const generateHTML = (...employeeArray) => {
         </div>
     </div>
 `
+
 for (let i = 0; i < employeeArray.length; i++) {
 
     var employee = employeeArray[i];
-    console.log(`\N\NTESTING IF WE CAN SEE THE NAME OF EMPLOYEES]\N\N`);
-    console.log(employeeArray[i]);
-    console.log(employeeArray[i].name);
-
-    console.log(employee);
-    console.log(employee.name);
+    
     if (employee.position === "Manager") {
         console.log(`manager already done`);
 
